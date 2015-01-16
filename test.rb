@@ -1,7 +1,15 @@
 require_relative 'lib/canon'
+#require 'stringio'
+#STDOUT.reopen '/dev/null','w'
 
-def print(string = '')
-  puts string
+def foo(string = '')
+  string.to_sym
 end
 
-print 'Hello'
+def bar(symbol = :empty)
+  [symbol]
+end
+
+var = foo 'Hello'
+var = bar var
+
