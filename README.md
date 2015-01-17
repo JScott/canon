@@ -26,7 +26,7 @@ Objectives
 2. Be able to define what qualifies as valid input. For input x, what is it required to ```respond_to?``` within method m.
 3. Be able to define what qualifies as valid output. For output y from method m, what will it be expected to ```respond_to?``` from creation until it is reaped by the garbage collection valkyries.
 
-_Together, these define a program to assert its identity: the collection of canonical method signatures and object interactions that state "This is what I am, and how I operate."_
+_Together, these allow a program to assert its identity: the collection of canonical method signatures and object interactions that state "This is what I am, and how I operate."_
 
 Notes
 -----
