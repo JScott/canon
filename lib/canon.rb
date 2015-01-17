@@ -1,19 +1,25 @@
 require 'moneta'
 
-established = Dir.exists? '.canon'
 
-archives = Moneta.new :File, dir: '.canon'
-puts "Canonical Execution Established as", "#{archives.fetch 'canon', []}"
+established_canon = false
+storage = Moneta.new :File, dir: '.canon'
+storage['identity'] = []
+
+puts "Established Canon is\n#{storage.fetch 'canon', []}\n---\n"
+storage['canon'] = [] unless established_canon
 
 TracePoint.trace do |t|
-  canon = archives.fetch 'canon', []
+  identity = storage.fetch 'identity', []
   case t.event
   when :return, :b_return
-    parameters = t.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
-    canon << [t.method_id, parameters, t.return_value]
+    get_parameters = "method(__method__).parameters.map { |p| eval p.last.to_s }"
+    parameters = t.binding.eval get_parameters
+    identity.push method: t.method_id, input: parameters, output: t.return_value
   end
-  archives.store 'canon', canon unless established
-end
+  storage.store 'identity', identity
+  storage.store 'canon', identity unless established_canon
 
-puts
-puts "Current Execution is", "#{archives.fetch 'canon', nil}"
+  p identity if identity.any?
+  #explore storage for where this input came from
+  # add this method to 
+end
