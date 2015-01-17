@@ -3,10 +3,10 @@ require 'moneta'
 
 established_canon = false
 storage = Moneta.new :File, dir: '.canon'
-storage['identity'] = []
+storage.delete 'identity'
 
 puts "Established Canon is\n#{storage.fetch 'canon', []}\n---\n"
-storage['canon'] = [] unless established_canon
+storage.delete 'canon' unless established_canon
 
 TracePoint.trace do |t|
   identity = storage.fetch 'identity', []
