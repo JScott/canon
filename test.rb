@@ -17,4 +17,4 @@ end
 var = foo 'Hello'
 var = bar var
 var = baz var
-#var = baz [:Hello]
+var = baz [:Hello]
