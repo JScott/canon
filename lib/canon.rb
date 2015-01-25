@@ -1,16 +1,47 @@
 require 'moneta'
 
-established = Dir.exists? '.canon'
+established_canon = false
+storage = Moneta.new :File, dir: '.canon'
 
-archives = Moneta.new :File, dir: '.canon'
-p "Canonical Execution Established as #{archives.fetch 'canon', []}"
+puts '---', "Identity\n#{storage.fetch 'identity', []}"
+puts '---', "Method dependencies\n#{storage.fetch 'method_dependencies', []}"
+puts '---', "Established Canon is\n#{storage.fetch 'canon', []}"
 
-TracePoint.trace do |t|
-  canon = archives.fetch 'canon', []
-  case t.event
-  when :return, :b_return
-    parameters = t.binding.eval "p method(__method__).parameters.map { |p| eval p.last.to_s }"
-    canon << [t.method_id, parameters, t.return_value]
+def map_output(from_method_calls:, to:)
+  matches = from_method_calls.select do |previous_method_call|
+    to[:input].index { |input| input.equal? previous_method_call[:output] }
   end
-  archives.store 'canon', canon unless established
+  matches.map do |match|
+    {
+      output: match[:output],
+      from: match[:name],
+      to: to[:name]
+    }
+  end
 end
+
+def new_method_call(from:)
+  parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
+  {
+    name: from.method_id,
+    input: parameters,
+    output: from.return_value
+  }
+end
+
+TracePoint.trace do |trace|
+  @identity ||= []
+  @dependencies ||= []
+  case trace.event
+  when :return
+    @identity.push new_method_call from: trace
+    @dependencies.concat map_output from_method_calls: @identity[0...-1], to: @identity.last
+  when :b_return, :c_return
+  else
+  end
+  storage.store 'identity', @identity
+  storage.store 'dependencies', @dependencies
+  storage.store 'canon', @identity unless established_canon
+end
+
+# don't put anything here unless you want it traced
