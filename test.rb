@@ -1,6 +1,4 @@
 require_relative 'lib/canon'
-#require 'stringio'
-#STDOUT.reopen '/dev/null','w'
 
 def foo(string = '')
   string.to_sym
@@ -14,7 +12,7 @@ def baz(array = [])
   array.map { |item| "#{item.to_s} world!" }
 end
 
-var = foo 'Hello'
-var = bar var
-var = baz var
-var = baz [:Hello]
+var = foo 'Hello'   # Gets recorded to the identity
+var = bar var       # Creates dependency foo->bar
+var = baz var       # Created dependency bar->baz
+var = baz [:Hello]  # Same value but isn't a dependency for bar!

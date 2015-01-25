@@ -39,9 +39,9 @@ TracePoint.trace do |trace|
   when :b_return, :c_return
   else
   end
-  storage.store 'identity', @identity.uniq
-  storage.store 'dependencies', @dependencies.uniq
-  storage.store 'canon', @identity.uniq unless established_canon
+  storage.store 'identity', @identity
+  storage.store 'dependencies', @dependencies
+  storage.store 'canon', @identity unless established_canon
 end
 
 # don't put anything here unless you want it traced
