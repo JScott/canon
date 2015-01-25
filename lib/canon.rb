@@ -25,13 +25,15 @@ TracePoint.trace do |t|
   @identity ||= []
   method_dependencies = storage.fetch 'method_dependencies', []
   case t.event
-  when :return#, :b_return
+  when :return
     parameters = t.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
     method_call = { name: t.method_id, input: parameters, output: t.return_value }
     output_dependencies = trace_output from_method_calls: @identity, to: method_call
 
     method_dependencies.concat output_dependencies unless output_dependencies.empty?
     @identity.push method_call
+  when :b_return, :c_return
+  else
   end
   storage.store 'identity', @identity
   storage.store 'method_dependencies', method_dependencies.uniq
