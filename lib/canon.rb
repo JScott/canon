@@ -4,12 +4,12 @@ established_canon = false
 storage = Moneta.new :File, dir: '.canon'
 
 puts '---', "Identity\n#{storage.fetch 'identity', []}"
-puts '---', "Method dependencies\n#{storage.fetch 'method_dependencies', []}"
+puts '---', "Method dependencies\n#{storage.fetch 'dependencies', []}"
 puts '---', "Established Canon is\n#{storage.fetch 'canon', []}"
 
 def map_output(from_method_calls:, to:)
-  matches = from_method_calls.select do |a_previous|
-    to[:input].detect { |given_input| given_input.equal? a_previous[:output] }
+  matches = from_method_calls.select do |previous|
+    to[:input].detect { |given_input| given_input.equal? previous[:output] }
   end
   matches.map do |match|
     {
