@@ -8,8 +8,8 @@ puts '---', "Method dependencies\n#{storage.fetch 'method_dependencies', []}"
 puts '---', "Established Canon is\n#{storage.fetch 'canon', []}"
 
 def map_output(from_method_calls:, to:)
-  matches = from_method_calls.select do |previous_method_call|
-    to[:input].index { |input| input.equal? previous_method_call[:output] }
+  matches = from_method_calls.select do |a_previous|
+    to[:input].detect { |given_input| given_input.equal? a_previous[:output] }
   end
   matches.map do |match|
     {
