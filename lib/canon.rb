@@ -7,10 +7,14 @@ puts '---', "Identity\n#{storage.fetch 'identity', []}"
 puts '---', "Method dependencies\n#{storage.fetch 'dependencies', []}"
 puts '---', "Established Canon is\n#{storage.fetch 'canon', []}"
 
-def map_output(from_method_calls:, to:)
-  matches = from_method_calls.select do |previous|
-    to[:input].detect { |given_input| given_input.equal? previous[:output] }
+def match_output_to_input(previous_method_calls, current)
+  previous_method_calls.select do |previous|
+    current[:input].detect { |given_input| given_input.equal? previous[:output] }
   end
+end
+
+def output_dependencies(from_method_calls:, to:)
+  matches = match_output_to_input(from_method_calls, to)
   matches.map do |match|
     {
       output: match[:output],
@@ -34,8 +38,9 @@ TracePoint.trace do |trace|
   @dependencies ||= []
   case trace.event
   when :return
-    @identity.push new_method_call from: trace
-    @dependencies.concat map_output from_method_calls: @identity[0...-1], to: @identity.last
+    method_call = new_method_call from: trace
+    @dependencies.concat output_dependencies from_method_calls: @identity, to: method_call
+    @identity.push method_call
   when :b_return, :c_return
   else
   end
