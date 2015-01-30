@@ -4,8 +4,11 @@ def foo(string = '')
   string.to_sym
 end
 
-def bar(symbol = :empty)
+def arrayify(symbol)
   [symbol]
+end
+def bar(symbol = :empty)
+  arrayify symbol
 end
 
 def baz(array = [])

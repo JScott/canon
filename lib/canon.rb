@@ -24,6 +24,11 @@ def output_dependencies(from_method_calls:, to:)
   end
 end
 
+def internal_dependencies(from_method_calls:, to:)
+  []
+  #matches = match_
+end
+
 def new_method_call(from:)
   parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
   {
@@ -40,6 +45,7 @@ TracePoint.trace do |trace|
   when :return
     method_call = new_method_call from: trace
     @dependencies.concat output_dependencies from_method_calls: @identity, to: method_call
+    @dependencies.concat internal_dependencies from_method_calls: @identity, to: method_call
     @identity.push method_call
   when :b_return, :c_return
   else
