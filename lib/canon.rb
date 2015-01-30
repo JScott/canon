@@ -14,7 +14,7 @@ def match_output_to_input(previous_method_calls, current)
 end
 
 def output_dependencies(from_method_calls:, to:)
-  puts '---', from_method_calls.inspect, to.inspect
+  #puts '---', from_method_calls.inspect, to.inspect
   matches = match_output_to_input(from_method_calls, to)
   matches.map do |match|
     {
@@ -32,6 +32,7 @@ end
 
 def new_method_call(from:)
   parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
+  #puts '---', from.method_id, parameters.inspect
   {
     name: from.method_id,
     input: parameters,
@@ -43,7 +44,12 @@ TracePoint.trace do |trace|
   @identity ||= []
   @dependencies ||= []
   case trace.event
+  when :call
+    parameters = trace.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
+    # Hook call with return by tracing the trace.event.object_id
+    puts '+++', trace.method_id, trace.event.object_id
   when :return
+    puts '???', trace.method_id, trace.event.object_id
     method_call = new_method_call from: trace
     @dependencies.concat output_dependencies from_method_calls: @identity, to: method_call
     @dependencies.concat internal_dependencies from_method_calls: @identity, to: method_call

@@ -12,6 +12,7 @@ def bar(symbol = :empty)
 end
 
 # for some reason it thinks that this input is [:Hello, 2], not [:Hello]
+# reason: the inner methods return before the outer. thus the value changes before we capture it
 def passthru(anything)
   #anything = something + [2]    # works as expected! overwriting?
   anything = anything + [2]
