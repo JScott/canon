@@ -14,6 +14,7 @@ def match_output_to_input(previous_method_calls, current)
 end
 
 def output_dependencies(from_method_calls:, to:)
+  puts '---', from_method_calls.inspect, to.inspect
   matches = match_output_to_input(from_method_calls, to)
   matches.map do |match|
     {
