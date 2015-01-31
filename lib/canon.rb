@@ -1,6 +1,6 @@
 require 'moneta'
 
-storage = Moneta.new :File, dir: '.canon'
+storage = Moneta.new :File, dir: '.self_identity'
 
 puts '---', "Method calls\n#{storage.fetch 'calls', []}"
 puts '---', "Method returns\n#{storage.fetch 'returns', []}"
