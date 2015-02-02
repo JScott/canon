@@ -22,11 +22,9 @@ given 'self_identity is required' do
         thread.join
       end
 
-      ['calls', 'returns', 'dependencies'].each do |data|
-        should "save method #{data}" do
-          actual = @storage.fetch data, []
-          assert_equal script[data], actual
-        end
+      should "save method dependencies" do
+        actual = @storage.fetch 'dependencies', []
+        assert_equal script['dependencies'], actual
       end
     end
   end

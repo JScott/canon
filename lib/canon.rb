@@ -10,20 +10,22 @@ def new_method_call(from:)
   parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
   {
     name: from.method_id,
-    input: parameters
+    input_reference: parameters,
+    input: parameters.map(&:clone)
   }
 end
 
 def new_method_return(from:)
   {
     name: from.method_id,
-    output: from.return_value
+    output_reference: from.return_value,
+    output: from.return_value.clone
   }
 end
 
 def returns_that_pass_to(current)
   @returns.select do |previous|
-    current[:input].detect { |given_input| given_input.equal? previous[:output] }
+    current[:input_reference].detect { |given_input| given_input.equal? previous[:output_reference] }
   end
 end
 
@@ -44,16 +46,20 @@ TracePoint.trace do |trace|
   case trace.event
   when :call
     method_call = new_method_call from: trace
+    puts "METHOD CALL: #{method_call}"
     @dependencies.concat dependencies_for(method_call)
+    puts "METHOD DEP: #{@dependencies.last}"
     @calls.push method_call
   when :return
     @returns.push new_method_return(from: trace)
+    puts "METHOD RETURN: #{@returns.last}"
   when :b_return, :c_return
   else
   end
   storage.store 'calls', @calls
   storage.store 'returns', @returns
   storage.store 'dependencies', @dependencies
+  #puts "--- endgame vvv", @calls.inspect, @returns.inspect, @dependencies.inspect, '^^^'
 end
 
 # don't put anything here unless you want it traced
