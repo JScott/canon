@@ -1,0 +1,16 @@
+---
+- name: basic_usage
+  dependencies:
+    - :output: [1]
+      :from: :foo
+      :to: :bar
+  calls:
+    - :name: :foo
+      :input: []
+    - :name: :bar
+      :input: [1]
+  returns:
+    - :name: :foo
+      :output: [1]
+    - :name: :bar
+      :output: [1, 2]

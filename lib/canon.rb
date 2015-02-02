@@ -2,9 +2,9 @@ require 'moneta'
 
 storage = Moneta.new :File, dir: '.self_identity'
 
-puts '---', "Method calls\n#{storage.fetch 'calls', []}"
-puts '---', "Method returns\n#{storage.fetch 'returns', []}"
-puts '---', "Method dependencies\n#{storage.fetch 'dependencies', []}"
+#puts '---', "Method calls\n#{storage.fetch 'calls', []}"
+#puts '---', "Method returns\n#{storage.fetch 'returns', []}"
+#puts '---', "Method dependencies\n#{storage.fetch 'dependencies', []}"
 
 def new_method_call(from:)
   parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
