@@ -1,4 +1,4 @@
-require_relative 'lib/canon'
+require_relative 'lib/self_identity'
 
 def foo(string = '')
   string.to_sym
