@@ -22,16 +22,18 @@ given 'self_identity is required' do
         thread.join
       end
 
-      should "save method calls" do
-        actual = @storage.fetch 'calls', []
-        actual.each do |call|
-          call.reject! { |key| key.match /reference/ }
+      ['calls', 'returns'].each do |data|
+        should "archive method #{data}" do
+          actual = @storage.fetch data, []
+          actual.each do |datum|
+            datum.reject! { |key| key.match /reference/ }
+          end
+          # TODO: pull request for kintama with assert_empty
+          assert_equal script[data], actual
         end
-        # TODO: pull request for kintama with assert_empty
-        assert_equal script['calls'], actual
       end
 
-      should "save method dependencies" do
+      should "calculate method dependencies" do
         actual = @storage.fetch 'dependencies', []
         assert_equal script['dependencies'], actual
       end
