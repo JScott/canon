@@ -2,9 +2,9 @@ require 'kintama'
 require 'yaml'
 require 'moneta'
 #require_relative 'helpers'
+# TODO: clean this up with helpers and such
 
 $scripts = YAML.load_file "#{__dir__}/script_expectations.yaml"
-puts $scripts.inspect, '---'
 
 given 'self_identity is required' do
   #include ScriptHelper

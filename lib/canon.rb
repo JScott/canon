@@ -2,13 +2,6 @@ require 'moneta'
 
 storage = Moneta.new :File, dir: '.self_identity'
 
-#puts '---', "Method calls\n#{storage.fetch 'calls', []}"
-#puts '---', "Method returns\n#{storage.fetch 'returns', []}"
-#puts '---', "Method dependencies\n#{storage.fetch 'dependencies', []}"
-
-# TODO: replace the actual object in *_reference with the object_id instead?
-#       might slim down on the returns_that_pass_to complexity with just Array#include?
-
 def new_method_call(from:)
   parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
   {
@@ -53,7 +46,12 @@ TracePoint.trace do |trace|
     @calls.push method_call
   when :return
     @returns.push new_method_return(from: trace)
-  when :b_return, :c_return
+  when :b_return
+    # not sure how to hook into method blocks
+    # __method__ returns the method it was called from
+  when :c_return
+    # might need a C extension to hook into C calls
+    # __method__ returns 'main'
   else
   end
   storage.store 'calls', @calls
