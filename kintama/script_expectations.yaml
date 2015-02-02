@@ -6,9 +6,9 @@
       :to: :bar
   calls:
     - :name: :foo
-      :input: []
+      :input: [[]]
     - :name: :bar
-      :input: [1]
+      :input: [[1]]
   returns:
     - :name: :foo
       :output: [1]
