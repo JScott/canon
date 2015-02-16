@@ -4,7 +4,7 @@ require 'moneta'
 #require_relative 'helpers'
 # TODO: clean this up with helpers and such
 
-$scripts = YAML.load_file "#{__dir__}/script_expectations.yaml"
+$scripts = YAML.load_file "#{__dir__}/expected/dependencies.yaml"
 
 given 'self_identity is required' do
   #include ScriptHelper
@@ -20,17 +20,6 @@ given 'self_identity is required' do
         script_path = "#{@script_dir}/#{script['name']}.rb"
         thread = Thread.new { system "ruby #{script_path}" }
         thread.join
-      end
-
-      ['calls', 'returns'].each do |data|
-        should "archive method #{data}" do
-          actual = @storage.fetch data, []
-          actual.each do |datum|
-            datum.reject! { |key| key.match /reference/ }
-          end
-          # TODO: pull request for kintama with assert_empty
-          assert_equal script[data], actual
-        end
       end
 
       should "calculate method dependencies" do
