@@ -5,13 +5,14 @@ def foo(array)
 end
 
 def bar(array)
-  baz array
-  array.push 2
+  # do work with array
+  array
 end
 
 def baz(array)
-  # do work with array
+  array.push 2
 end
 
 var = foo []
 var = bar var
+var = baz var

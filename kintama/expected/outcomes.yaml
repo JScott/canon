@@ -25,3 +25,15 @@
       :output: [1]
     - :name: :bar
       :output: [1, 2]
+
+- name: passthrough_methods
+  dependencies:
+    - :output: [1]
+      :from: :foo
+      :to: :bar
+    - :output: [1]
+      :from: :foo
+      :to: :baz
+    - :output: [1]
+      :from: :bar
+      :to: :baz

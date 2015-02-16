@@ -15,7 +15,7 @@ def new_method_return(from:)
   {
     name: from.method_id,
     output_reference: from.return_value,
-    output: from.return_value.clone
+    output: from.return_value ? from.return_value.clone : nil
   }
 end
 
