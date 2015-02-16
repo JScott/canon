@@ -37,3 +37,9 @@
     - :output: [1]
       :from: :bar
       :to: :baz
+
+- name: tracking_id_not_value
+  dependencies:
+    - :output: [1,2]
+      :from: :bar
+      :to: :baz
