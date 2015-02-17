@@ -3,4 +3,5 @@ gem 'moneta'
 
 group :testing do
   gem 'kintama'
+  gem 'terminal-table'
 end
