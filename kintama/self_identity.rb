@@ -13,7 +13,7 @@ end
 given 'self_identity is required' do
   setup do
     @script_dir = "#{__dir__}/scripts"
-    @storage = Moneta.new :File, dir: '.self_identity'
+    @storage = Moneta.new :File, dir: "#{__dir__}/../lib/.self_identity"
   end
   
   $scripts.each do |script|
