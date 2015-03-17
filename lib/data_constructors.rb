@@ -1,17 +1,27 @@
+def safe_clone(object)
+  begin
+    object.clone
+  rescue TypeError => e
+    object
+  end
+end
+
 def new_method_call(from:)
   parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
+  end
   {
     name: from.method_id,
     input_reference: parameters,
-    input: parameters.map(&:clone)
+    input: parameters.map { |parameter| safe_clone parameter }
   }
 end
 
 def new_method_return(from:)
+  end
   {
     name: from.method_id,
     output_reference: from.return_value,
-    output: from.return_value ? from.return_value.clone : nil
+    output: safe_clone(from.return_value)
   }
 end
 
