@@ -23,9 +23,9 @@ TracePoint.trace do |trace|
   else
   end
   script_name = File.basename($PROGRAM_NAME, '.rb')
-  storage.store "#{script_name}-calls", @calls
-  storage.store "#{script_name}-returns", @returns
-  storage.store "#{script_name}-dependencies", @dependencies
+  storage.store 'calls', @calls
+  storage.store 'returns', @returns
+  storage.store 'dependencies', @dependencies
 end
 
 # don't put anything here unless you want it traced

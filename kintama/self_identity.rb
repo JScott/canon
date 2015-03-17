@@ -27,7 +27,7 @@ given 'self_identity is required' do
       ['calls', 'returns', 'dependencies'].each do |data|
         if script[data]
           should "archive method #{data}" do
-            actual = @storage.fetch "#{script['name']}-#{data}", []
+            actual = @storage.fetch data, []
             actual.each { |hash| remove_reference_keys_for hash }
             assert_equal script[data], actual
           end
