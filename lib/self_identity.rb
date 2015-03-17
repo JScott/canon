@@ -1,7 +1,7 @@
 require 'moneta'
 require_relative 'data_constructors'
 
-storage = Moneta.new :File, dir: "#{__dir__}/.self_identity"
+storage = Moneta.new :File, dir: '.self_identity'
 
 TracePoint.trace do |trace|
   @calls ||= []
