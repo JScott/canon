@@ -6,6 +6,10 @@ require 'moneta'
 
 $scripts = YAML.load_file "#{__dir__}/expected/outcomes.yaml"
 
+def remove_reference_keys_for(hash)
+  hash.reject! { |key| key.match /reference/ }
+end
+
 given 'self_identity is required' do
   setup do
     @script_dir = "#{__dir__}/scripts"
@@ -20,21 +24,11 @@ given 'self_identity is required' do
         thread.join
       end
 
-      if script['dependencies']
-        should "calculate method dependencies" do
-          actual = @storage.fetch 'dependencies', []
-          assert_equal script['dependencies'], actual
-        end
-      end
-
-      ['calls', 'returns'].each do |data|
+      ['calls', 'returns', 'dependencies'].each do |data|
         if script[data]
           should "archive method #{data}" do
-            actual = @storage.fetch data, []
-            actual.each do |datum|
-              datum.reject! { |key| key.match /reference/ }
-            end
-            # TODO: pull request for kintama with assert_empty
+            actual = @storage.fetch "#{script['name']}-#{data}", []
+            actual.each { |hash| remove_reference_keys_for hash }
             assert_equal script[data], actual
           end
         end
