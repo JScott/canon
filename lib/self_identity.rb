@@ -6,7 +6,7 @@ storage['calls'] = []
 storage['returns'] = []
 storage['dependencies'] = []
 
-$self_identity = TracePoint.trace do |trace|
+@trace = TracePoint.trace do |trace|
   @calls ||= []
   @returns ||= []
   @dependencies ||= []
@@ -30,5 +30,23 @@ $self_identity = TracePoint.trace do |trace|
   storage.store 'returns', @returns
   storage.store 'dependencies', @dependencies
 end
+
+module SelfIdentity
+  @@trace = @trace
+
+  def self.enabled?
+    @@trace.enabled?
+  end
+
+  def self.enable
+    @@trace.enable
+  end
+
+  def self.disable
+    @@trace.disable
+  end
+end
+
+@trace = nil
 
 # don't put anything here unless you want it traced
