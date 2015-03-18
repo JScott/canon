@@ -8,10 +8,9 @@ end
 
 def new_method_call(from:)
   parameters = from.binding.eval "method(__method__).parameters.map { |p| eval p.last.to_s }"
-  end
   {
     name: from.method_id,
-    input_reference: parameters,
+    input_reference: parameters.map(&:object_id),
     input: parameters.map { |parameter| safe_clone parameter }
   }
 end
@@ -20,7 +19,7 @@ def new_method_return(from:)
   end
   {
     name: from.method_id,
-    output_reference: from.return_value,
+    output_reference: from.return_value.object_id,
     output: safe_clone(from.return_value)
   }
 end
