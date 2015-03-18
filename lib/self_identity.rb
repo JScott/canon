@@ -2,8 +2,11 @@ require 'moneta'
 require_relative 'data_constructors'
 
 storage = Moneta.new :File, dir: '.self_identity'
+storage['calls'] = []
+storage['returns'] = []
+storage['dependencies'] = []
 
-TracePoint.trace do |trace|
+$self_identity = TracePoint.trace do |trace|
   @calls ||= []
   @returns ||= []
   @dependencies ||= []
