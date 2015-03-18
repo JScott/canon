@@ -1,14 +1,32 @@
 self_identity
 =============
 
-Tests that write themselves, an adventure in alternative testing methodology.
+Helping code understand itself, an adventure in alternative testing methodology.
 
-Status
-------
+Usage
+-----
 
-Incomplete implementation, working towards a proof of concept. Barely tested, has no stable API, and is probably broken.
+`require 'self_identity'` and your code will record its method dependencies each time it runs.
 
-This is a work in progress!
+From the working directory the script was run from, you'll find a [Moneta](https://github.com/minad/moneta) file storage with the following arrays and element formats:
+
+### calls
+
+- __name__: the method called
+- __input_reference__: object_id's of the input
+- __input__: the given input array
+
+### returns
+
+- __name__: the method returned from
+- __output_reference__: object_id of the output
+- __output__: the generated output
+
+### dependencies
+
+- __output__: the object passed between the methods
+- __from__: the method returned from
+- __to__: the method called
 
 Background
 ----------
