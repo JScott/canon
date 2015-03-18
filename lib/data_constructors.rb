@@ -16,7 +16,6 @@ def new_method_call(from:)
 end
 
 def new_method_return(from:)
-  end
   {
     name: from.method_id,
     output_reference: from.return_value.object_id,
