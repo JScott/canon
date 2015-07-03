@@ -6,9 +6,9 @@ Helping code understand itself, an adventure in alternative testing methodology.
 Usage
 -----
 
-`require 'self_identity'` and your code will record its method dependencies each time it runs.
+`require 'self_identity'` and your code will record its method dependencies each time it runs. Be sure to add this _after_ any requires. It trips TracePoint up and we haven't figured out a solution for it yet. If you can't do this, add `SelfIdentity.`
 
-From the working directory the script was run from, you'll find a [Moneta](https://github.com/minad/moneta) file storage with the following arrays and element formats:
+From the working directory the script was run from, you'll find [Moneta](https://github.com/minad/moneta) file stores under `.self_identity` with arrays of the following element formats:
 
 ### calls
 

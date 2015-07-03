@@ -1,5 +1,5 @@
 require_relative '../../lib/self_identity'
-require 'robot_sweatshop'
+SelfIdentity.disable { require 'yaml' }
 
 def foo(array)
   array.push 1

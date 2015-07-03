@@ -44,7 +44,7 @@
       :from: :bar
       :to: :baz
 
-- name: complex_require
+- name: disable_self_identity
   dependencies:
     - :output: [1]
       :from: :foo
