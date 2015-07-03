@@ -15,7 +15,7 @@ given 'self_identity is required' do
     @script_dir = "#{__dir__}/scripts"
     @storage = Moneta.new :File, dir: '.self_identity'
   end
-  
+
   $scripts.each do |script|
     context "running scripts for #{script['name']}" do
       setup do
