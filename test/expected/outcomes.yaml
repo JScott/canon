@@ -43,3 +43,9 @@
     - :output: [1,2]
       :from: :bar
       :to: :baz
+
+- name: complex_require
+  dependencies:
+    - :output: [1]
+      :from: :foo
+      :to: :bar
